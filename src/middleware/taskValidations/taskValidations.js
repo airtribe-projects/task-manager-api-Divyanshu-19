@@ -11,26 +11,32 @@ function validateTaskBody(required = true) {
     return (req, res, next) => {
         const { title, description, completed } = req.body;
 
-        if (!required && title === undefined && description === undefined && completed === undefined) {
-            return res.status(400).send({ err: "At least one field must be provided" });
-        }
-
-        if (title !== undefined) {
-            if (typeof title !== "string" || title.trim() === "") {
-                return res.status(400).send({ err: "Title must be a non-empty string" });
+        // For POST: all fields must exist
+        if (required) {
+            if (
+                title === undefined ||
+                description === undefined ||
+                completed === undefined
+            ) {
+                return res.status(400).send({ err: "All fields (title, description, completed) are required" });
+            }
+        } else {
+            // For PUT: at least one field must exist
+            if (title === undefined && description === undefined && completed === undefined) {
+                return res.status(400).send({ err: "At least one field must be provided" });
             }
         }
 
-        if (description !== undefined) {
-            if (typeof description !== "string" || description.trim() === "") {
-                return res.status(400).send({ err: "Description must be a non-empty string" });
-            }
+        if (title !== undefined && (typeof title !== "string" || title.trim() === "")) {
+            return res.status(400).send({ err: "Title must be a non-empty string" });
         }
 
-        if (completed !== undefined) {
-            if (typeof completed !== "boolean") {
-                return res.status(400).send({ err: "Completed must be a boolean" });
-            }
+        if (description !== undefined && (typeof description !== "string" || description.trim() === "")) {
+            return res.status(400).send({ err: "Description must be a non-empty string" });
+        }
+
+        if (completed !== undefined && typeof completed !== "boolean") {
+            return res.status(400).send({ err: "Completed must be a boolean" });
         }
 
         next();

@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/tasks", (req, res) => {
-    res.send(tasks);
+    return res.status(200).send(tasks);
 })
 
 app.get("/tasks/:id", validateTaskId, (req, res) => {
@@ -23,7 +23,7 @@ app.get("/tasks/:id", validateTaskId, (req, res) => {
     if(!response){
         return res.status(404).send({err: "No response found"});
     }
-    return res.send(response);
+    return res.status(200).send(response);
 })
 
 app.post("/tasks", validateTaskBody(true), (req, res) => {
@@ -35,7 +35,7 @@ app.post("/tasks", validateTaskBody(true), (req, res) => {
         completed
     };
     tasks.push(newTask);
-    res.send(newTask);
+    return res.status(201).send(newTask);
 })
 
 app.put("/tasks/:id", validateTaskId, validateTaskBody(false), (req, res) => {
@@ -51,7 +51,7 @@ app.put("/tasks/:id", validateTaskId, validateTaskBody(false), (req, res) => {
     if (description !== undefined) task.description = description.trim();
     if (completed !== undefined) task.completed = completed;
 
-    res.send(task);
+    res.status(200).send(task);
 })
 
 app.delete('/tasks/:id', validateTaskId, (req, res) => {
@@ -63,7 +63,7 @@ app.delete('/tasks/:id', validateTaskId, (req, res) => {
     }
 
     const deletedTask = tasks.splice(taskIndex, 1)[0];
-    res.send(deletedTask);
+    res.status(200).send(deletedTask);
 });
 
 
