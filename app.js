@@ -14,7 +14,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/tasks", (req, res) => {
-    return res.status(200).send(tasks);
+    const {completed} = req.query;
+    let result = tasks;
+
+    if (completed) {
+        if (completed !== "true" && completed !== "false") {
+            return res.status(400).send({ err: "completed query must be 'true' or 'false'" });
+        }
+        const completedBool = completed === "true";
+        result = result.filter(item => item.completed === completedBool);
+    }
+
+    return res.status(200).send(result);
 })
 
 app.get("/tasks/:id", validateTaskId, (req, res) => {
