@@ -101,10 +101,10 @@ Create a new task.
 
 ```json
 {
-  "title": "Write API docs",
-  "description": "Document the REST API",
+  "title": "title",
+  "description": "description",
   "completed": false,
-  "priority": "medium"
+  "priority": "low"
 }
 ```
 
@@ -124,10 +124,10 @@ PUT /tasks/1
 
 ```json
 {
-  "title": "Update Docs",
-  "description": "Update the documentation for API",
-  "completed": true,
-  "priority": "high"
+  "title": "title",
+  "description": "description",
+  "completed": false,
+  "priority": "low"
 }
 ```
 
